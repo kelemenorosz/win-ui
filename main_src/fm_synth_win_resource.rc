@@ -1,0 +1,10 @@
+#include "fm_synth_win_resource.h"
+
+IDR_MYMENU MENU
+{
+	POPUP "MIDI"
+	{
+		MENUITEM "Reload Midi Interfaces...", ID_MIDI_RELOAD
+	}
+
+}

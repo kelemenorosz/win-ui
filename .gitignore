@@ -1,0 +1,9 @@
+build/
+clip.txt
+depth.bmp
+render.bmp
+dx12api.lib
+pipeline.txt
+*.sublime*
+ui.exe
+uiapi.lib
