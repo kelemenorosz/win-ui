@@ -159,6 +159,9 @@ int asset::Tex::GetHeight() {
 
 UINT32 asset::Tex::GetValue(int pos) {
 
+	if (pos <= 0) return 0;
+	if (pos > (width * height)) return 0;
+
 	if (pixel_size == 32) return reinterpret_cast<UINT32*>(ptr)[pos];
 
 	if (pixel_size == 24) {

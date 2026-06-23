@@ -65,6 +65,12 @@ LRESULT CALLBACK ThreadedWindow::WindProc(HWND windowInstance, UINT uMsg, WPARAM
 		case WM_MOUSEMOVE:
 			return this->_OnMouseMove(windowInstance, uMsg, wParam, lParam);
 			break;
+		case WM_ACTIVATE:
+			return this->_OnActivate(windowInstance, uMsg, wParam, lParam);
+			break; 
+		case WM_INPUT:
+			return this->_OnInput(windowInstance, uMsg, wParam, lParam);
+			break;
 		case WM_MENUSELECT:
 			return this->_OnMenuSelect(windowInstance, uMsg, wParam, lParam);
 			break; 
@@ -208,6 +214,20 @@ LRESULT ThreadedWindow::OnChar(HWND windowInstance, UINT uMsg, WPARAM wParam, LP
 
 }
 
+LRESULT ThreadedWindow::OnActivate(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+	printf("ThreadedWindow::OnActivate().\n");
+	return ::DefWindowProc(windowInstance, uMsg, wParam, lParam);
+
+}
+
+LRESULT ThreadedWindow::OnInput(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+	printf("ThreadedWindow::OnInput().\n");
+	return ::DefWindowProc(windowInstance, uMsg, wParam, lParam);
+
+}
+
 LRESULT ThreadedWindow::OnCustomEventInit(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 	printf("ThreadedWindow::OnCustomEventInit().\n");
@@ -249,6 +269,17 @@ LRESULT ThreadedWindow::_OnMenuSelect(HWND windowInstance, UINT uMsg, WPARAM wPa
 LRESULT ThreadedWindow::_OnChar(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 	return OnChar(windowInstance, uMsg, wParam, lParam);
+}
+
+LRESULT ThreadedWindow::_OnActivate(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+	return OnActivate(windowInstance, uMsg, wParam, lParam);
+}
+
+LRESULT ThreadedWindow::_OnInput(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+	return OnInput(windowInstance, uMsg, wParam, lParam);
+
 }
 
 LRESULT ThreadedWindow::_OnCustomEventInit(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) {

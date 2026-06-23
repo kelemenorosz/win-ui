@@ -3,6 +3,18 @@
 #include "rasterizer.h"
 #include <random>
 
+struct Vertex_Desc {
+
+	rst::matrix<4, 4> world_matrix;
+
+};
+
+struct alignas(64) Instance_Desc {
+
+	rst::vector<3> pos;
+
+};
+
 class CubeRender : public Rasterizer {
 
 	public:
@@ -19,15 +31,29 @@ class CubeRender : public Rasterizer {
 	private:
 
 		virtual LRESULT OnRender() override;
-		void OnVertex(rst::vertex<double>& vertex);
+		void OnVertex(void* ptr, rst::vertex<double>& vertex);
+		void OnVertexSecond(void* ptr, rst::vertex<double>& vertex, void* instance_ptr);
 		void OnPixel(rst::vertex<double>& pixel);
+		void OnPixelSecond(rst::vertex<double>& pixel);
 
 		virtual LRESULT OnMouseWheel(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
+		virtual LRESULT OnMouseMove(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
+		virtual LRESULT OnActivate(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
+		virtual LRESULT OnInput(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 		virtual LRESULT OnChar(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
+
+		void MouseCameraMovement(LONG lLastX, LONG lLastY);
+
+		RECT old_clip_rect;
+		RECT window_rect;
+		bool cursor_clipped;
 
 		asset::Mesh cube;
 		asset::Mesh triangle;
+		asset::Mesh sphere_cylindrical;
 		asset::Tex depth_texture;
+		asset::Tex white_texture;
+		asset::Tex crate_texture;
 
 		double cube_position_x;
 		double cube_position_y;
@@ -39,6 +65,26 @@ class CubeRender : public Rasterizer {
 		rst::color* color_buf;
 		UINT64 color_counter;
 		int color_len;
+
+		rst::matrix<4, 4> camera_view_matrix;
+		rst::matrix<4, 4> camera_rotation_matrix;
+		rst::vector<3> camera_position;
+		rst::vector<3> camera_target;
+		rst::vector<3> camera_up; 
+		double camera_rotation;
+		double camera_position_x;
+		double camera_position_y;
+		double camera_position_z;
+		double camera_target_x;
+		double camera_target_y;
+		double camera_target_z;
+
+		bool camera_panning_running;
+		int mouse_x;
+		int mouse_y;
+
+		Vertex_Desc vertex_desc;
+		Instance_Desc instance_buffer[64];
 
 		UINT32* texture;
 		int texture_width;

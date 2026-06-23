@@ -7,3 +7,7 @@ pipeline.txt
 *.sublime*
 ui.exe
 uiapi.lib
+*.log
+nuget_packages/
+*.dll
+tex/earthmap10k*

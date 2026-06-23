@@ -118,6 +118,8 @@ class ThreadedWindow {
 		virtual LRESULT OnMouseMove(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		virtual LRESULT OnMenuSelect(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		virtual LRESULT OnChar(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		virtual LRESULT OnActivate(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		virtual LRESULT OnInput(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		virtual LRESULT OnCustomEventInit(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		virtual LRESULT OnCustomEventOther(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	
@@ -130,6 +132,8 @@ class ThreadedWindow {
 		virtual LRESULT _OnMouseMove(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) final;
 		virtual LRESULT _OnMenuSelect(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) final;
 		virtual LRESULT _OnChar(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) final;
+		virtual LRESULT _OnActivate(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) final;
+		virtual LRESULT _OnInput(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) final;
 		virtual LRESULT _OnCustomEventInit(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) final;
 		virtual LRESULT _OnCustomEventOther(HWND windowInstance, UINT uMsg, WPARAM wParam, LPARAM lParam) final;
 

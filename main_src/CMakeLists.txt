@@ -3,6 +3,18 @@ cmake_minimum_required(VERSION 3.20)
 get_property(UIAPI_LOCATION GLOBAL PROPERTY uiapi_location)
 message(CMAKE_BINARY_DIR="${UIAPI_LOCATION}")
 
+find_program(NUGET nuget)
+add_custom_target(WinPixTarget ALL)
+add_custom_command(
+	TARGET WinPixTarget PRE_BUILD
+	COMMAND ${NUGET} install WinPixEventRuntime -OutputDirectory ${CMAKE_SOURCE_DIR}/nuget_packages)
+add_custom_command(
+	TARGET WinPixTarget POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/nuget_packages/WinPixEventRuntime.1.0.240308001/bin/x64/WinPixEventRuntime.dll ${CMAKE_SOURCE_DIR}/WinPixEventRuntime.dll)
+add_custom_command(
+	TARGET WinPixTarget POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/nuget_packages/WinPixEventRuntime.1.0.240308001/bin/x64/WinPixEventRuntime.dll ${CMAKE_CURRENT_BINARY_DIR}/Debug/WinPixEventRuntime.dll)
+
 add_executable(
 	ui WIN32
 	main.cpp
@@ -35,9 +47,13 @@ add_definitions(-DUNICODE)
 set_property(TARGET ui PROPERTY CXX_STANDARD 23)
 
 target_include_directories(ui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/)
+target_include_directories(ui PRIVATE ${CMAKE_SOURCE_DIR}/nuget_packages/WinPixEventRuntime.1.0.240308001/Include/WinPixEventRuntime/)
+target_link_options(ui PRIVATE "LINKER:/DEBUG:FULL")
 target_link_libraries(ui uiapi)
 target_link_libraries(ui dx12api)
 target_link_libraries(ui Winmm.lib)
+target_link_libraries(ui ${CMAKE_SOURCE_DIR}/nuget_packages/WinPixEventRuntime.1.0.240308001/bin/x64/WinPixEventRuntime.lib)
+add_dependencies(ui WinPixTarget)
 
 add_custom_command(TARGET ui POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/plot.hlsl ${CMAKE_CURRENT_BINARY_DIR}/main_src/plot.hlsl)
 add_custom_command(TARGET ui POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/mono2d.hlsl ${CMAKE_CURRENT_BINARY_DIR}/main_src/mono2d.hlsl)
@@ -52,5 +68,9 @@ add_custom_command(TARGET ui POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE
 add_custom_command(TARGET ui POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tex/crate_tex.bmp ${CMAKE_CURRENT_BINARY_DIR}/tex/crate_tex.bmp)
 add_custom_command(TARGET ui POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tex/butterfly_tex.bmp ${CMAKE_CURRENT_BINARY_DIR}/tex/butterfly_tex.bmp)
 add_custom_command(TARGET ui POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tex/depth_tex.bmp ${CMAKE_CURRENT_BINARY_DIR}/tex/depth_tex.bmp)
+add_custom_command(TARGET ui POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../mesh/sphere_cylinder.obj ${CMAKE_CURRENT_BINARY_DIR}/mesh/sphere_cylinder.obj)
+add_custom_command(TARGET ui POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tex/earthmap10k.bmp ${CMAKE_CURRENT_BINARY_DIR}/tex/earthmap10k.bmp)
+add_custom_command(TARGET ui POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tex/white_tex.bmp ${CMAKE_CURRENT_BINARY_DIR}/tex/white_tex.bmp)
+add_custom_command(TARGET ui POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tex/default_tex.bmp ${CMAKE_CURRENT_BINARY_DIR}/tex/default_tex.bmp)
 
 install(TARGETS ui DESTINATION ${CMAKE_SOURCE_DIR})

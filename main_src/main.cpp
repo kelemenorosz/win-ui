@@ -18,20 +18,20 @@ int CALLBACK wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	ThreadedWindow::Initialize(GetModuleHandle(NULL));
 	DX12Window::InitDebug();
 	
-	TWHANDLE dxHandle = StartWnd<DX12Window>(L"DX12 Window", 0, 0, 640, 640);
-	DX12Window::RegisterLayer<PlotLayer>(dxHandle);
+	// TWHANDLE dxHandle = StartWnd<DX12Window>(L"DX12 Window", 0, 0, 640, 640);
+	// DX12Window::RegisterLayer<PlotLayer>(dxHandle);
 
-	TWHANDLE fmHandle = StartWnd<FMSynth>(L"FM Synth Window", 0, 0, 640, 640);
+	// TWHANDLE fmHandle = StartWnd<FMSynth>(L"FM Synth Window", 0, 0, 640, 640);
 
-	float* range = new float[48000];
-	for (int i = 0; i < 48000; ++i) *(range + i) = static_cast<float>(i);
+	// float* range = new float[48000];
+	// for (int i = 0; i < 48000; ++i) *(range + i) = static_cast<float>(i);
 
-	PlotLayer::InitDesc initDesc = { reinterpret_cast<void*>(range), reinterpret_cast<void*>(range), 48000, 24000.0f, 24000.0f, -1.0f, -1.0f };
-	DX12Window::LayerMessage(dxHandle, DX12Layer_Event_Type::DX12LAYER_EVENT_TYPE_INIT, reinterpret_cast<void*>(&initDesc));
+	// PlotLayer::InitDesc initDesc = { reinterpret_cast<void*>(range), reinterpret_cast<void*>(range), 48000, 24000.0f, 24000.0f, -1.0f, -1.0f };
+	// DX12Window::LayerMessage(dxHandle, DX12Layer_Event_Type::DX12LAYER_EVENT_TYPE_INIT, reinterpret_cast<void*>(&initDesc));
 
-	delete[] range;
+	// delete[] range;
 
-	TWHANDLE rstHandle = StartWnd<Rasterizer>(L"Rasterizer Window", 0, 0, 640, 640);
+	// TWHANDLE rstHandle = StartWnd<Rasterizer>(L"Rasterizer Window", 0, 0, 640, 640);
 
 	TWHANDLE cubeHandle = StartWnd<CubeRender>(L"Cube Render Window", 0, 0, 640, 640);
 	
